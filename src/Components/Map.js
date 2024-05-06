@@ -1,35 +1,60 @@
 // Map.js
 import React, { useState } from 'react';
 import back from '../assets/back.jpg';
-import Sensor from './Sensor';
+import SensorInfo from './SensorInfo';
 
-const Map = () => {
+function Map() {
   const [selectedSensor, setSelectedSensor] = useState(null);
+  const [points] = useState([
+    { id: 1, x: 255, y: 100, status: 'normal' },
+    { id: 2, x: 400, y: 527, status: 'leak' },
+    // Ajoutez d'autres points au besoin
+  ]);
 
-  const handleSensorClick = (sensorData) => {
-    setSelectedSensor(sensorData);
+  // Fonction pour gérer le clic sur un point et afficher les informations du capteur
+  const handleClick = (id) => {
+    // Trouver le capteur cliqué en fonction de son ID
+    const clickedSensor = points.find(point => point.id === id);
+    setSelectedSensor(clickedSensor);
   };
 
   return (
     <div style={{ position: 'relative', backgroundImage: `url(${back})`, backgroundSize: 'cover', height: '100vh' }}>
-      {/* Render sensors */}
-      <Sensor id={1} x={100} y={200} status="normal" onClick={() => handleSensorClick({ id: 1, location: "Location 1", temperature: 25, humidity: 50 })} />
-      <Sensor id={2} x={300} y={400} status="normal" onClick={() => handleSensorClick({ id: 2, location: "Location 2", temperature: 28, humidity: 45 })} />
-      {/* Add more sensors as needed */}
+      {/* Points de la carte */}
+      {points.map(point => (
+        <div
+          key={point.id}
+          style={{
+            position: 'absolute',
+            left: point.x,
+            top: point.y,
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%',
+            backgroundColor: getPointColor(point.status),
+            cursor: 'pointer',
+            // Vous pouvez ajouter plus de styles au besoin
+          }}
+          onClick={() => handleClick(point.id)}
+        ></div>
+      ))}
 
-      {/* Render sensor information */}
-      {selectedSensor && (
-        <div style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
-          <h2>Sensor Information</h2>
-          <p>Sensor ID: {selectedSensor.id}</p>
-          <p>Location: {selectedSensor.location}</p>
-          <p>Temperature: {selectedSensor.temperature}</p>
-          <p>Humidity: {selectedSensor.humidity}</p>
-          {/* Add more sensor information as needed */}
-        </div>
-      )}
+      {/* Rendre le composant SensorInfo lorsque l'on clique sur un point */}
+      {selectedSensor && <SensorInfo sensor={selectedSensor} />}
     </div>
   );
+}
+
+// Fonction pour obtenir la couleur du point en fonction de l'état du capteur
+const getPointColor = (status) => {
+  switch (status) {
+    case 'normal':
+      return 'green';
+    case 'leak':
+      return 'red';
+    default:
+      return 'yellow';
+  }
 }
 
 export default Map;
