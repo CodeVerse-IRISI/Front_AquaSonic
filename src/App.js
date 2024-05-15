@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaTimes,FaExclamationTriangle } from 'react-icons/fa';
-import Graph from './Components/Graph';
+import { FaTimes, FaExclamationTriangle } from 'react-icons/fa';
 import Map from './Components/Map';
-function Notification({ message, onClose }) {
+
+function Notification({ message, onClose, small }) {
+  const containerStyle = {
+    ...styles.container,
+    ...(small ? styles.smallContainer : null)
+  };
+
   return (
-    <div style={styles.container}>
+    <div style={containerStyle}>
       <div style={styles.icon}><FaExclamationTriangle /></div>
       <p style={styles.message}>{message}</p>
       <button onClick={onClose} style={styles.closeButton}><FaTimes /></button>
@@ -15,7 +20,7 @@ function Notification({ message, onClose }) {
 
 const styles = {
   container: {
-    backgroundColor: '#C23028', 
+    backgroundColor: '#C23028',
     color: 'white',
     padding: '15px',
     borderRadius: '10px',
@@ -25,11 +30,15 @@ const styles = {
     boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
     marginBottom: '10px',
   },
+  smallContainer: {
+    padding: '10px', // Réduire le padding pour rendre la notification plus petite
+    fontSize: '0.9em', // Réduire la taille de la police
+  },
   message: {
     margin: '0',
     flexGrow: '1',
   },
-   icon: {
+  icon: {
     marginRight: '10px',
   },
   closeButton: {
@@ -52,20 +61,33 @@ function LeakStatus() {
         setSensorData(response.data);
         // Check gravity for each sensor and add leaking sensors to the list
         const sensors = Object.entries(response.data).filter(([sensorId, gravity]) => gravity >= 75);
-        setLeakingSensors(sensors.map(([sensorId]) => sensorId));
+        setLeakingSensors(sensors.map(([sensorId]) => ({ id: sensorId, small: false })));
       })
       .catch(error => {
         console.error('Error fetching sensor data:', error);
       });
   }, []);
 
+  const handleNotificationClose = (sensorId) => {
+    setLeakingSensors(leakingSensors.filter(sensor => sensor.id !== sensorId));
+  };
+
+  const handlePointClick = (sensorId) => {
+    setLeakingSensors(leakingSensors.map(sensor => {
+      if (sensor.id === sensorId) {
+        return { ...sensor, small: true }; // Rendre la notification de ce capteur plus petite
+      } else {
+        return sensor;
+      }
+    }));
+  };
+
   return (
     <div>
-      {leakingSensors.map(sensorId => (
-        <Notification key={sensorId} message={`Attention : Fuite grave détectée dans le capteur ${sensorId} !`} onClose={() => setLeakingSensors(leakingSensors.filter(id => id !== sensorId))} />
+      {leakingSensors.map(sensor => (
+        <Notification key={sensor.id} message={`Attention : Fuite grave détectée dans le capteur ${sensor.id} !`} onClose={() => handleNotificationClose(sensor.id)} small={sensor.small} />
       ))}
-       <Map/>
-       <Graph/>
+      <Map onPointClick={handlePointClick} />
     </div>
   );
 }
