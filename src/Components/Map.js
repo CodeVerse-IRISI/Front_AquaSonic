@@ -27,6 +27,21 @@ function Map() {
           nb_fuite: capteur.nb_fuite,
           nb_reparation: capteur.nb_reparation,
         })));
+
+        // Appel de l'API pour obtenir les degrés de fuite des capteurs
+        axios.get('http://localhost:8087/api/Couleur/leakStatus')
+          .then(response => {
+            const leakStatus = response.data;
+            // Mettre à jour les couleurs des points en fonction des degrés de fuite
+            const updatedPoints = points.map(point => ({
+              ...point,
+              status: getPointColor(leakStatus[point.id]),
+            }));
+            setPoints(updatedPoints);
+          })
+          .catch(error => {
+            console.error('Erreur lors de la récupération des données de fuite:', error);
+          });
       })
       .catch(error => {
         console.error('Error fetching sensor data:', error);
@@ -51,12 +66,10 @@ function Map() {
     }
 
     // Adjust point positions to account for sidebar
-    setPoints(points.map(point => {
-      return {
-        ...point,
-        x: point.x - (sidebarVisible ? 150 : 0), // Adjust x based on sidebar visibility
-      };
-    }));
+    setPoints(points.map(point => ({
+      ...point,
+      x: point.x - (sidebarVisible ? 150 : 0), // Adjust x based on sidebar visibility
+    })));
   };
 
   return (
