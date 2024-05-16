@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import back from '../assets/back.jpg';
 import Sidebar from './Sidebar';
 
 function Map() {
   const [selectedSensor, setSelectedSensor] = useState(null);
-  const [points, setPoints] = useState([
-    {
-      id: 1,
-      x: 255,
-      y: 100,
-      status: 'normal',
-      droite_id: 'droite1',
-      gauche_id: 'gauche1',
-      nb_fuite: 3,
-      nb_reparation: 2,
-    },
-    {
-      id: 2,
-      x: 400,
-      y: 527,
-      status: 'leak',
-      droite_id: 'droite2',
-      gauche_id: 'gauche2',
-      nb_fuite: 1,
-      nb_reparation: 1,
-    },
-    // Ajouter d'autres points au besoin
-  ]);
+  const [points, setPoints] = useState([]);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState({ x: 0, y: 0 });
   const [backgroundSize, setBackgroundSize] = useState('90%'); // Adjust initial size as needed
+
+  useEffect(() => {
+    // Appel de l'API pour obtenir les coordonnées des points
+    axios.get('http://localhost:8087/api/capteurs')
+      .then(response => {
+        // Les données de la réponse de l'API
+        const capteurs = response.data;
+        // Mettre à jour les points avec les coordonnées x et y de l'API
+        setPoints(capteurs.map(capteur => ({
+          id: capteur.id,
+          x: capteur.x,
+          y: capteur.y,
+          status: 'normal', // Définissez la valeur par défaut pour le statut
+          droite_id: capteur.droite_id,
+          gauche_id: capteur.gauche_id,
+          nb_fuite: capteur.nb_fuite,
+          nb_reparation: capteur.nb_reparation,
+        })));
+      })
+      .catch(error => {
+        console.error('Error fetching sensor data:', error);
+      });
+  }, []); // Exécute une seule fois lors du montage du composant
 
   const handleClick = (id) => {
     // Find the clicked sensor
