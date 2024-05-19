@@ -7,69 +7,57 @@ function Map() {
   const [selectedSensor, setSelectedSensor] = useState(null);
   const [points, setPoints] = useState([]);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [backgroundPosition, setBackgroundPosition] = useState({ x: 0, y: 0 });
-  const [backgroundSize, setBackgroundSize] = useState('90%'); // Adjust initial size as needed
 
   useEffect(() => {
-    // Appel de l'API pour obtenir les coordonnées des points
-    axios.get('http://localhost:8087/api/capteurs')
-      .then(response => {
-        // Les données de la réponse de l'API
-        const capteurs = response.data;
-        // Mettre à jour les points avec les coordonnées x et y de l'API
-        setPoints(capteurs.map(capteur => ({
-          id: capteur.id,
+    const fetchData = async () => {
+      try {
+        // Fetch sensor data from the first API
+        const sensorResponse = await axios.get('http://localhost:8087/api/capteurs');
+        const capteurs = sensorResponse.data;
+
+        // Fetch leak status from the second API
+        const leakStatusResponse = await axios.get('http://localhost:8087/api/Couleur/leakStatus');
+        const leakStatus = leakStatusResponse.data;
+
+        // Map the sensor data with the leak status to determine the point color
+        const updatedPoints = capteurs.map(capteur => ({
+          id: capteur.sensor_id,
           x: capteur.x,
           y: capteur.y,
-          status: 'normal', // Définissez la valeur par défaut pour le statut
-          droite_id: capteur.droite_id,
-          gauche_id: capteur.gauche_id,
-          nb_fuite: capteur.nb_fuite,
-          nb_reparation: capteur.nb_reparation,
-        })));
+          status: leakStatus[capteur.sensor_id] < 50 ? 'green' : 'red', // Determine color based on leak status
+        }));
 
-        // Appel de l'API pour obtenir les degrés de fuite des capteurs
-        axios.get('http://localhost:8087/api/Couleur/leakStatus')
-          .then(response => {
-            const leakStatus = response.data;
-            // Mettre à jour les couleurs des points en fonction des degrés de fuite
-            const updatedPoints = points.map(point => ({
-              ...point,
-              status: getPointColor(leakStatus[point.id]),
-            }));
-            setPoints(updatedPoints);
-          })
-          .catch(error => {
-            console.error('Erreur lors de la récupération des données de fuite:', error);
-          });
-      })
-      .catch(error => {
-        console.error('Error fetching sensor data:', error);
-      });
-  }, []); // Exécute une seule fois lors du montage du composant
+        // Set the points state with the updated points
+        setPoints(updatedPoints);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  const handleClick = (id) => {
-    // Find the clicked sensor
-    const clickedSensor = points.find(point => point.id === id);
-    setSelectedSensor(clickedSensor);
-    setSidebarVisible(true);
+    fetchData();
+  }, []); // Run only once on component mount
 
-    // Adjust background styles based on click
-    if (selectedSensor) {
-      // Smaller size after click
-      setBackgroundPosition({ x: 0, y: 0 });
-      setBackgroundSize('100%'); // Make the image significantly smaller
-    } else {
-      // Initial size before click
-      setBackgroundPosition({ x: 0, y: 0 });
-      setBackgroundSize('90%'); // Adjust initial size as needed
+  // Handle click event for a sensor
+  const handleClick = async (id) => {
+    try {
+      // Fetch additional sensor information from the API
+      const sensorInfoResponse = await axios.get(`http://localhost:8087/api/information/${id}`);
+      const sensorInfo = sensorInfoResponse.data;
+
+      const clickedSensor = points.find(point => point.id === id);
+      const selectedSensor = {
+        ...clickedSensor,
+        droite_id: sensorInfo.droite_id,
+        gauche_id: sensorInfo.gauche_id,
+        nb_fuite: sensorInfo.nb_fuite,
+        nb_reparation: sensorInfo.nb_reparation,
+      };
+
+      setSelectedSensor(selectedSensor);
+      setSidebarVisible(true);
+    } catch (error) {
+      console.error('Error fetching sensor information:', error);
     }
-
-    // Adjust point positions to account for sidebar
-    setPoints(points.map(point => ({
-      ...point,
-      x: point.x - (sidebarVisible ? 150 : 0), // Adjust x based on sidebar visibility
-    })));
   };
 
   return (
@@ -88,40 +76,28 @@ function Map() {
           transition: 'background-size 0.5s ease', // Add transition for smooth effect
         }}
       />
-      {/* Points de la carte */}
+      {/* Render sensor points on the map */}
       {points.map(point => (
         <div
           key={point.id}
           style={{
             position: 'absolute',
-            left: `${((point.x / 1000) * 100) - (sidebarVisible ? 150 / 100 : 0)}%`, // Adjust position based on sidebar visibility
-            top: `${(point.y / 667) * 100}%`,
+            left: `${((point.x / 1000) * 100)}%`, // Adjust position based on percentage
+            top: `${(point.y / 667) * 100}%`, // Adjust position based on percentage
             transform: 'translate(-50%, -50%)',
             width: '10px',
             height: '10px',
             borderRadius: '50%',
-            backgroundColor: getPointColor(point.status),
+            backgroundColor: point.status, // Use status directly for background color
             cursor: 'pointer',
           }}
           onClick={() => handleClick(point.id)}
         />
       ))}
-      {/* Afficher la barre latérale uniquement si un capteur est sélectionné */}
+      {/* Show sidebar only if a sensor is selected */}
       {selectedSensor && sidebarVisible && <Sidebar sensor={selectedSensor} />}
     </div>
   );
-}
-
-// Function to get point color based on sensor status
-const getPointColor = (status) => {
-  switch (status) {
-    case 'normal':
-      return 'green';
-    case 'leak':
-      return 'red';
-    default:
-      return 'yellow';
-  }
 }
 
 export default Map;

@@ -6,7 +6,7 @@ import Map from './Components/Map';
 function Notification({ message, onClose, small }) {
   const containerStyle = {
     ...styles.container,
-    ...(small ? styles.smallContainer : null)
+    ...(small ? styles.smallContainer : null),
   };
 
   return (
@@ -31,8 +31,8 @@ const styles = {
     marginBottom: '10px',
   },
   smallContainer: {
-    padding: '10px', // Réduire le padding pour rendre la notification plus petite
-    fontSize: '0.9em', // Réduire la taille de la police
+    padding: '10px', // Reduce padding for smaller notification
+    fontSize: '0.9em', // Reduce font size
   },
   message: {
     margin: '0',
@@ -48,18 +48,15 @@ const styles = {
     fontWeight: 'bold',
     cursor: 'pointer',
     fontSize: '20px',
-  }
+  },
 };
 
 function LeakStatus() {
-  const [sensorData, setSensorData] = useState({});
   const [leakingSensors, setLeakingSensors] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:8087/api/AquaSonic/AllSensorsDegreeLeak')
       .then(response => {
-        setSensorData(response.data);
-        // Check gravity for each sensor and add leaking sensors to the list
         const sensors = Object.entries(response.data).filter(([sensorId, gravity]) => gravity >= 75);
         setLeakingSensors(sensors.map(([sensorId]) => ({ id: sensorId, small: false })));
       })
@@ -75,7 +72,7 @@ function LeakStatus() {
   const handlePointClick = (sensorId) => {
     setLeakingSensors(leakingSensors.map(sensor => {
       if (sensor.id === sensorId) {
-        return { ...sensor, small: true }; // Rendre la notification de ce capteur plus petite
+        return { ...sensor, small: true }; // Make the notification of this sensor smaller
       } else {
         return sensor;
       }
@@ -85,7 +82,12 @@ function LeakStatus() {
   return (
     <div>
       {leakingSensors.map(sensor => (
-        <Notification key={sensor.id} message={`Attention : Fuite grave détectée dans le capteur ${sensor.id} !`} onClose={() => handleNotificationClose(sensor.id)} small={sensor.small} />
+        <Notification
+          key={sensor.id}
+          message={`Attention : Fuite grave détectée dans le capteur ${sensor.id} !`}
+          onClose={() => handleNotificationClose(sensor.id)}
+          small={sensor.small}
+        />
       ))}
       <Map onPointClick={handlePointClick} />
     </div>
