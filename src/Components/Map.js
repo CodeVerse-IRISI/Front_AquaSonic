@@ -16,7 +16,7 @@ function Map() {
         const capteurs = sensorResponse.data;
 
         // Fetch leak status from the second API
-        const leakStatusResponse = await axios.get('http://localhost:8087/api/Couleur/leakStatus');
+        const leakStatusResponse = await axios.get('http://localhost:8087/api/AquaSonic/Couleur/leakStatus');
         const leakStatus = leakStatusResponse.data;
 
         // Map the sensor data with the leak status to determine the point color
