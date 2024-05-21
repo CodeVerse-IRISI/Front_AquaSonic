@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTimes, FaExclamationTriangle } from 'react-icons/fa';
 import Map from './Components/Map';
+import SensorDataComponent from './Components/SensorDataComponent'
 
 function Notification({ message, onClose, small }) {
   const styles = {
@@ -59,15 +60,30 @@ function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8087/api/AquaSonic/AllSensorsDegreeLeak')
-      .then(response => {
-        const sensors = Object.entries(response.data).filter(([sensorId, gravity]) => gravity >= 75);
+    const socket = new WebSocket('ws://localhost:8087/ws/sensor-data');
+
+    socket.onopen = () => {
+        console.log('WebSocket connection established');
+    };
+
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const sensors = Object.entries(data).filter(([sensorId, gravity]) => gravity >= 75);
         setLeakingSensors(sensors.map(([sensorId]) => ({ id: sensorId, small: false })));
-      })
-      .catch(error => {
-        console.error('Error fetching sensor data:', error);
-      });
-  }, []);
+    };
+
+    socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+
+    socket.onclose = (event) => {
+        console.log('WebSocket connection closed:', event);
+    };
+
+    return () => {
+        socket.close();
+    };
+}, []);
 
   const handleNotificationClose = (sensorId) => {
     setLeakingSensors(leakingSensors.filter(sensor => sensor.id !== sensorId));
@@ -94,6 +110,7 @@ function LeakStatus() {
         />
       ))}
       <Map onPointClick={handlePointClick} />
+      <SensorDataComponent/>
     </div>
   );
 }
