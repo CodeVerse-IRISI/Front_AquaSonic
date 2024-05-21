@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTimes, FaExclamationTriangle } from 'react-icons/fa';
-import Map from './Components/Map';
 
 function Notification({ message, onClose, small }) {
   const styles = {
@@ -55,7 +54,7 @@ function Notification({ message, onClose, small }) {
   );
 }
 
-function LeakStatus() {
+function NotificationsPage() {
   const [leakingSensors, setLeakingSensors] = useState([]);
 
   useEffect(() => {
@@ -93,9 +92,8 @@ function LeakStatus() {
           small={sensor.small}
         />
       ))}
-      <Map onPointClick={handlePointClick} />
     </div>
   );
 }
 
-export default LeakStatus;
+export default NotificationsPage;
