@@ -38,8 +38,8 @@ To get started, follow these steps:
 ## Usage
 Once the dependencies are installed, you can start the development server by running:
 ```sh
-npm start
-
+ npm start
+ ```
 ## File Structure
 Here's a description of the main files in the project and their utilities:
 
@@ -49,10 +49,12 @@ Here's a description of the main files in the project and their utilities:
 4. src/components/Map.js: Shows the interactive map with sensor locations and handles sensor interactions.
 5. src/components/ChartComponent.js: Manages the display of sensor data charts.
 6.src/components/Graph.js: Displays sensor data in graphical form.
+
 ## Features
 --Displays a map with sensor points.
 --Clicking on a sensor point reveals sensor information.
 --Sensor status is visually represented by color (green for normal, red for abnormal).
+
 ## Contributing
 We welcome contributions from the community! If you'd like to contribute to this project, please fork the repository, make your changes, and submit a pull request.
 
