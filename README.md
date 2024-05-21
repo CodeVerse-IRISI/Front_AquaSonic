@@ -51,12 +51,12 @@ Here's a description of the main files in the project and their utilities:
 6.src/components/Graph.js: Displays sensor data in graphical form.
 
 ## Features
---Displays a map with sensor points.
---Clicking on a sensor point reveals sensor information.
---Sensor status is visually represented by color (green for normal, red for abnormal).
+- Displays a map with sensor points.
+- Clicking on a sensor point reveals sensor information.
+- Sensor status is visually represented by color (green for normal, red for abnormal).
 
 ## Contributing
-We welcome contributions from the community! If you'd like to contribute to this project, please fork the repository, make your changes, and submit a pull request.
+   We welcome contributions from the community! If you'd like to contribute to this project, please fork the repository, make your changes, and submit a pull request.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+   This project is licensed under the MIT License - see the LICENSE file for details.
