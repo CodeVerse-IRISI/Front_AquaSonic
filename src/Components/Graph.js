@@ -6,7 +6,7 @@ const Graph = ({ sensorData }) => {
     <div>
       {sensorData.length > 0 ? (
         <>
-          <h1 style={{ fontFamily: 'monospace', color:'blue' }}>Diagrammes: {sensorData[0].sensor_id}</h1>
+          <h1 style={{ fontFamily: 'monospace', color:'#585858' }}>Diagrammes: {sensorData[0].sensor_id}</h1>
           {sensorData.map((data, index) => (
             <div key={index}>
               <h2 style={{ color: '#5784BA', textAlign: 'start', textDecoration: 'underline', fontFamily: 'monospace' }}>Appel {index + 1}</h2>

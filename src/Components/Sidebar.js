@@ -58,23 +58,23 @@ const Sidebar = ({ sensor }) => {
       flexDirection: 'column'
     }}>
       <div style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px', display: 'flex', alignItems: 'center' }}>
-        <h2 style={{ marginLeft: '2px',color:'blue' }}>Sensor Info</h2>
+        <h2 style={{ marginLeft: '2px',color:'#585858' }}>Sensor Info:</h2>
         <input
           type="date"
           value={searchDate}
           onChange={handleSearchChange}
-          style={{ padding: '2px', width: '20%', marginLeft:'150px',color:'blue' }}
+          style={{ padding: '3px', width: '25%', marginLeft:'80px',color:'blue' }}
         />
       </div>
 
       {sensorInfo && (
         <>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem' }}>Name: <span style={{ color: 'blue' }}>{sensorInfo.id}</span></p>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem'  }}>Status: <span style={{ color: sensorInfo.status }}>{sensorInfo.status}</span></p>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem'  }}>Right sonsor: <span style={{ color: 'blue' }}>{sensorInfo.droite_id}</span></p>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem'  }}>Left sonsor: <span style={{ color: 'blue' }}>{sensorInfo.gauche_id}</span></p>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem'  }}>Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span></p>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem'  }}>Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>Name: <span style={{ color: 'blue' }}>{sensorInfo.id}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Status: <span style={{ color: sensorInfo.status }}>{sensorInfo.status}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Right sonsor: <span style={{ color: 'blue' }}>{sensorInfo.droite_id}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Left sonsor: <span style={{ color: 'blue' }}>{sensorInfo.gauche_id}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span></p>
+          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span></p>
         </>
       )}
 
