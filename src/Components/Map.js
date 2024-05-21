@@ -21,7 +21,7 @@ function Map() {
           id: capteur.sensor_id,
           x: capteur.x,
           y: capteur.y,
-          status: leakStatus[capteur.sensor_id] < 50 ? 'green' : 'red',
+          status: leakStatus[capteur.sensor_id] < 50 ? 'normal' : 'leak',
         }));
 
         setPoints(updatedPoints);
@@ -81,13 +81,19 @@ function Map() {
             width: '10px',
             height: '10px',
             borderRadius: '50%',
-            backgroundColor: point.status,
+            backgroundColor: point.status === 'normal' ? 'green' : 'red',
             cursor: 'pointer',
           }}
           onClick={() => handleClick(point.id)}
         />
       ))}
-      {selectedSensor && sidebarVisible && <Sidebar key={selectedSensor.id} sensor={selectedSensor} />}
+      {selectedSensor && sidebarVisible && (
+        <Sidebar
+          key={selectedSensor.id}
+          sensor={selectedSensor}
+          textColor={selectedSensor.status === 'normal' ? 'green' : 'red'}
+        />
+      )}
     </div>
   );
 }

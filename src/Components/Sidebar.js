@@ -9,7 +9,7 @@ const Sidebar = ({ sensor }) => {
 
   useEffect(() => {
     fetchTodaysSensorData(sensor.id);
-    setSensorInfo(sensor); // Update sensorInfo state whenever the sensor prop changes
+    setSensorInfo(sensor);
   }, [sensor]);
 
   const fetchSensorDataByDate = async (sensorId, dateStr) => {
@@ -48,7 +48,7 @@ const Sidebar = ({ sensor }) => {
       right: 0,
       width: '450px',
       height: '100%',
-      backgroundColor: '#E8EDDF', 
+      backgroundColor: '#E8EDDF',
       boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)',
       padding: '20px',
       boxSizing: 'border-box',
@@ -58,23 +58,35 @@ const Sidebar = ({ sensor }) => {
       flexDirection: 'column'
     }}>
       <div style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px', display: 'flex', alignItems: 'center' }}>
-        <h2 style={{ marginLeft: '2px',color:'#585858' }}>Sensor Info:</h2>
+        <h2 style={{ marginLeft: '2px', color: '#585858' }}>Sensor Info:</h2>
         <input
           type="date"
           value={searchDate}
           onChange={handleSearchChange}
-          style={{ padding: '3px', width: '25%', marginLeft:'80px',color:'blue' }}
+          style={{ padding: '3px', width: '25%', marginLeft: 'auto', color: 'blue' }}
         />
       </div>
 
       {sensorInfo && (
         <>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>Name: <span style={{ color: 'blue' }}>{sensorInfo.id}</span></p>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Status: <span style={{ color: sensorInfo.status }}>{sensorInfo.status}</span></p>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Right sonsor: <span style={{ color: 'blue' }}>{sensorInfo.droite_id}</span></p>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Left sonsor: <span style={{ color: 'blue' }}>{sensorInfo.gauche_id}</span></p>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span></p>
-          <p style={{ fontFamily: 'monospace',color:"#317AC1", marginBottom: '10px', fontSize: '1.1rem'  }}>Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span></p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Name: <span style={{ color: 'blue' }}>{sensorInfo.id}</span>
+          </p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Status: <span style={{ color: sensorInfo.status === 'normal' ? 'green' : 'red' }}>{sensorInfo.status}</span>
+          </p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Right sensor: <span style={{ color: 'blue' }}>{sensorInfo.droite_id}</span>
+          </p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Left sensor: <span style={{ color: 'blue' }}>{sensorInfo.gauche_id}</span>
+          </p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span>
+          </p>
+          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+            Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span>
+          </p>
         </>
       )}
 
