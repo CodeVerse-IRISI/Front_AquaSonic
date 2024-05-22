@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaTimes, FaExclamationTriangle } from 'react-icons/fa';
 import Map from './Components/Map';
-import SensorDataComponent from './Components/SensorDataComponent'
 
 function Notification({ message, onClose, small }) {
   const containerStyle = {
@@ -106,7 +105,6 @@ function LeakStatus() {
         />
       ))}
       <Map onPointClick={handlePointClick} />
-      <SensorDataComponent/>
     </div>
   );
 }
