@@ -19,8 +19,8 @@ function Map() {
 
         const updatedPoints = capteurs.map(capteur => ({
           id: capteur.sensor_id,
-          x: capteur.x,
-          y: capteur.y,
+          x: capteur.X,
+          y: capteur.Y,
           status: leakStatus[capteur.sensor_id] < 50 ? 'normal' : 'leak',
         }));
 
@@ -75,12 +75,14 @@ function Map() {
           key={point.id}
           style={{
             position: 'absolute',
-            left: `${((point.x / 1000) * 100)}%`,
-            top: `${(point.y / 667) * 100}%`,
+            left: `${((point.x / 2000) * 100)}%`,
+            top: `${(point.y / 1334) * 100}%`,
             transform: 'translate(-50%, -50%)',
             width: '10px',
             height: '10px',
             borderRadius: '50%',
+            marginLeft: '50%',
+            marginTop: '10%',
             backgroundColor: point.status === 'normal' ? 'green' : 'red',
             cursor: 'pointer',
           }}
