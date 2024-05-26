@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import back from '../assets/back.jpg';
 import Sidebar from './Sidebar';
+import Point from './Point';
 
 function Map() {
   const [selectedSensor, setSelectedSensor] = useState(null);
@@ -71,22 +72,13 @@ function Map() {
         }}
       />
       {points.map(point => (
-        <div
+        <Point
           key={point.id}
-          style={{
-            position: 'absolute',
-            left: `${((point.x / 2000) * 100)}%`,
-            top: `${(point.y / 1334) * 100}%`,
-            transform: 'translate(-50%, -50%)',
-            width: '10px',
-            height: '10px',
-            borderRadius: '50%',
-            marginLeft: '50%',
-            marginTop: '10%',
-            backgroundColor: point.status === 'normal' ? 'green' : 'red',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleClick(point.id)}
+          id={point.id}
+          x={point.x}
+          y={point.y}
+          status={point.status}
+          onClick={handleClick}
         />
       ))}
       {selectedSensor && sidebarVisible && (
