@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import back from '../assets/back.jpg';
 import Sidebar from './Sidebar';
+import Point from './Point';
 
 function Map() {
   const [selectedSensor, setSelectedSensor] = useState(null);
@@ -18,8 +19,8 @@ function Map() {
 
         const updatedPoints = capteurs.map(capteur => ({
           id: capteur.sensor_id,
-          x: capteur.x,
-          y: capteur.y,
+          x: capteur.X,
+          y: capteur.Y,
           status: leakStatus[capteur.sensor_id] < 50 ? 'normal' : 'leak',
         }));
 
@@ -69,26 +70,16 @@ function Map() {
           transition: 'background-size 0.5s ease',
         }}
       />
-
-  {points.map(point => (
-    <div
-      key={point.id}
-      style={{
-        position: 'absolute',
-        left: `${((point.x / 1000) * 100)}%`,
-        top: `${((point.y / 667) * 100)}%`,
-        transform: 'translate(-50%, -50%)',
-        width: '10px',
-        height: '10px',
-        borderRadius: '50%',
-        backgroundColor: point.status === 'normal' ? 'green' : 'red',
-        cursor: 'pointer',
-      }}
-      onClick={() => handleClick(point.id)}
-    />
-  ))}
-
-
+      {points.map(point => (
+        <Point
+          key={point.id}
+          id={point.id}
+          x={point.x}
+          y={point.y}
+          status={point.status}
+          onClick={handleClick}
+        />
+      ))}
       {selectedSensor && sidebarVisible && (
         <Sidebar
           key={selectedSensor.id}
