@@ -13,7 +13,6 @@ function Map() {
       try {
         const sensorResponse = await axios.get('http://localhost:8087/api/capteurs');
         const capteurs = sensorResponse.data;
-
         const leakStatusResponse = await axios.get('http://localhost:8087/api/AquaSonic/Couleur/leakStatus');
         const leakStatus = leakStatusResponse.data;
 
@@ -70,23 +69,26 @@ function Map() {
           transition: 'background-size 0.5s ease',
         }}
       />
-      {points.map(point => (
-        <div
-          key={point.id}
-          style={{
-            position: 'absolute',
-            left: `${((point.x / 1000) * 100)}%`,
-            top: `${(point.y / 667) * 100}%`,
-            transform: 'translate(-50%, -50%)',
-            width: '10px',
-            height: '10px',
-            borderRadius: '50%',
-            backgroundColor: point.status === 'normal' ? 'green' : 'red',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleClick(point.id)}
-        />
-      ))}
+
+  {points.map(point => (
+    <div
+      key={point.id}
+      style={{
+        position: 'absolute',
+        left: `${((point.x / 1000) * 100)}%`,
+        top: `${((point.y / 667) * 100)}%`,
+        transform: 'translate(-50%, -50%)',
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        backgroundColor: point.status === 'normal' ? 'green' : 'red',
+        cursor: 'pointer',
+      }}
+      onClick={() => handleClick(point.id)}
+    />
+  ))}
+
+
       {selectedSensor && sidebarVisible && (
         <Sidebar
           key={selectedSensor.id}
