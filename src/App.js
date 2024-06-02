@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Map from './Components/Map';
 import Notification from './Components/Notification';
+import Rapport from './Components/Rapport';
 
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
@@ -56,6 +57,7 @@ function LeakStatus() {
         />
       ))}
       <Map onPointClick={handlePointClick} />
+      <Rapport/>
     </div>
   );
 }
