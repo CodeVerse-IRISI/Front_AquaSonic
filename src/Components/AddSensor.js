@@ -22,7 +22,7 @@ const AddSensor = ({ showModal, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8087/api/save', formData);
+      const response = await axios.post('http://localhost:8087/api/SaveInfoSensor', formData);
       console.log('Données envoyées avec succès:', response.data);
       onClose();
     } catch (error) {

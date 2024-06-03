@@ -33,8 +33,8 @@ const LeftSidebar = ({ onAddSensorClick, onParametrSensorClick, onHomeClick, set
         src={logo}
         alt="Company Logo"
         sx={{
-          width: '50px',
-          height: '50px',
+          width: '100px',
+          height: '100px',
           marginBottom: '80px',
           cursor: 'pointer',
         }}
