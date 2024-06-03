@@ -3,9 +3,12 @@ import Map from './Components/Map';
 import Notification from './Components/Notification';
 import Rapport from './Components/Rapport';
 import AddSensor from './Components/AddSensor';
+import LeftSidebar from './Components/LeftSidebar';
 
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
+  const [showAddSensorModal, setShowAddSensorModal] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8087/ws/sensor-data');
@@ -47,6 +50,19 @@ function LeakStatus() {
     }));
   };
 
+  const handleAddSensorClick = () => {
+    setShowAddSensorModal(true);
+  };
+
+  const handleCloseAddSensorModal = () => {
+    setShowAddSensorModal(false);
+  };
+
+  const handleNavigateToFirstPage = () => {
+    console.log("Navigate to first page");
+    setSidebarVisible(false);
+  };
+
   return (
     <div>
       {leakingSensors.map(sensor => (
@@ -58,8 +74,18 @@ function LeakStatus() {
         />
       ))}
       <Map onPointClick={handlePointClick} />
+      <Map 
+        onPointClick={handlePointClick}
+        sidebarVisible={sidebarVisible}
+        setSidebarVisible={setSidebarVisible}
+      />
+      <LeftSidebar
+        onAddSensorClick={handleAddSensorClick}
+        onHomeClick={handleNavigateToFirstPage}
+        setSidebarVisible={setSidebarVisible} 
+      />
+      <AddSensor showModal={showAddSensorModal} onClose={handleCloseAddSensorModal} />
       <Rapport/>
-      <AddSensor/>
     </div>
   );
 }
