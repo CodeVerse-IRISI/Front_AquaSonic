@@ -1,7 +1,6 @@
-// src/Components/AddSensor.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Modal, Box, Typography, TextField, Grid, IconButton } from '@mui/material';
+import {Button,Modal,Box,Typography,TextField,Grid,IconButton,} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const AddSensor = ({ showModal, onClose }) => {
@@ -39,10 +38,12 @@ const AddSensor = ({ showModal, onClose }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
+          bgcolor: '#F0F0F0',
+          boxShadow: 3,
           p: 4,
-          borderRadius: 2,
+          borderRadius: 1,
+          width: '600px',
+          maxWidth: '90%',
         }}
       >
         <IconButton
@@ -57,18 +58,19 @@ const AddSensor = ({ showModal, onClose }) => {
         >
           <CloseIcon />
         </IconButton>
-        <Typography variant="h6" component="h2" gutterBottom>
+        <Typography variant="h5" component="h2" color={'#317AC1'} gutterBottom marginLeft={'20%'}>
           Ajouter un nouveau capteur
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Nom de capteur"
+                label="Nom du capteur"
                 name="sensor_id"
                 value={formData.sensor_id}
                 onChange={handleChange}
                 fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
@@ -79,6 +81,7 @@ const AddSensor = ({ showModal, onClose }) => {
                 value={formData.x}
                 onChange={handleChange}
                 fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
@@ -89,6 +92,7 @@ const AddSensor = ({ showModal, onClose }) => {
                 value={formData.y}
                 onChange={handleChange}
                 fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
@@ -98,6 +102,7 @@ const AddSensor = ({ showModal, onClose }) => {
                 value={formData.droite_id}
                 onChange={handleChange}
                 fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
@@ -107,6 +112,7 @@ const AddSensor = ({ showModal, onClose }) => {
                 value={formData.gauche_id}
                 onChange={handleChange}
                 fullWidth
+                variant="outlined"
               />
             </Grid>
           </Grid>
@@ -114,7 +120,7 @@ const AddSensor = ({ showModal, onClose }) => {
             type="submit"
             variant="contained"
             color="primary"
-            sx={{ mt: 2 }}
+            sx={{ mt: 3 }}
           >
             Envoyer
           </Button>

@@ -1,31 +1,73 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import AddIcon from '@mui/icons-material/Add';
-import logo from '../assets/logo.png'; // Add your logo image to the assets folder
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import SettingsIcon from '@mui/icons-material/Settings';
+import logo from '../assets/logo.png';
 
-const LeftSidebar = ({ onAddSensorClick }) => {
+const LeftSidebar = ({ onAddSensorClick, onParametrSensorClick, onHomeClick, setSidebarVisible }) => {
+  const handleLogoClick = () => {
+    setSidebarVisible(false);
+    onHomeClick();
+  };
+
   return (
-    <div style={{ 
-      width: '60px', 
-      height: '100vh', 
-      backgroundColor: '#f4f4f4', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center',
-      padding: '10px',
-      position: 'fixed',
-      left: 0,
-      top: 0
-    }}>
-      <img src={logo} alt="Company Logo" style={{ width: '40px', height: '40px', marginBottom: '20px' }} />
-      <Button variant="contained" color="primary" style={{ marginBottom: '10px' }}>
-        <HomeIcon />
-      </Button>
-      <Button variant="contained" color="primary" onClick={onAddSensorClick}>
-        <AddIcon />
-      </Button>
-    </div>
+    <Box
+      sx={{
+        width: '40px',
+        height: '100vh',
+        backgroundColor: '#D5CABC',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '10px',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+        zIndex: 1000,
+      }}
+    >
+      <Box
+        component="img"
+        src={logo}
+        alt="Company Logo"
+        sx={{
+          width: '50px',
+          height: '50px',
+          marginBottom: '80px',
+          cursor: 'pointer',
+        }}
+        onClick={handleLogoClick}
+      />
+      <Tooltip title="Accueil" placement="right" arrow>
+        <IconButton
+          color="primary"
+          sx={{ marginBottom: '60px' }}
+          onClick={handleLogoClick}
+        >
+          <HomeIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Ajouter un capteur" placement="right" arrow>
+        <IconButton
+          color="primary"
+          sx={{ marginBottom: '60px' }}
+          onClick={onAddSensorClick}
+        >
+          <AddCircleOutlineIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Paramètres" placement="right" arrow>
+        <IconButton
+          color="primary"
+          sx={{ marginBottom: '60px' }}
+          onClick={onParametrSensorClick}
+        >
+          <SettingsIcon />
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Graph from './Graph';
+import { Box, Typography, TextField, Paper } from '@mui/material';
 
 const Sidebar = ({ sensor }) => {
   const [searchDate, setSearchDate] = useState('');
@@ -42,56 +43,60 @@ const Sidebar = ({ sensor }) => {
   }, [searchDate, sensor.id]);
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      right: 0,
-      width: '450px',
-      height: '100%',
-      backgroundColor: '#E8EDDF',
-      boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)',
-      padding: '20px',
-      boxSizing: 'border-box',
-      overflowY: 'auto',
-      zIndex: 999,
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      <div style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px', display: 'flex', alignItems: 'center' }}>
-        <h2 style={{ marginLeft: '2px', color: '#585858' }}>Sensor Info:</h2>
-        <input
+    <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        width: '450px',
+        height: '100%',
+        backgroundColor: '#D5CABC',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+        padding: '20px',
+        boxSizing: 'border-box',
+        overflowY: 'auto',
+        zIndex: 999,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box sx={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px', display: 'flex', color: '#D5CABC', alignItems: 'center' }}>
+        <Typography variant="h6" sx={{ marginRight: '20px', color: '#333' }}>
+          Sensor Info:
+        </Typography>
+        <TextField
           type="date"
           value={searchDate}
           onChange={handleSearchChange}
-          style={{ padding: '3px', width: '25%', marginLeft: 'auto', color: 'blue' }}
+          variant="outlined"
+          size="small"
+          sx={{ marginLeft: 'auto' }}
         />
-      </div>
-
+      </Box>
       {sensorInfo && (
-        <>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
-            Name: <span style={{ color: 'blue' }}>{sensorInfo.id}</span>
-          </p>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+        <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px', color: '#D5CABC'}}>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
+            Name: <span style={{ color: '#2E3244' }}>{sensorInfo.id}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
             Status: <span style={{ color: sensorInfo.status === 'normal' ? 'green' : 'red' }}>{sensorInfo.status}</span>
-          </p>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
-            Right sensor: <span style={{ color: 'blue' }}>{sensorInfo.droite_id}</span>
-          </p>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
-            Left sensor: <span style={{ color: 'blue' }}>{sensorInfo.gauche_id}</span>
-          </p>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
+            Right sensor: <span style={{ color: '#2E3244' }}>{sensorInfo.droite_id}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
+            Left sensor: <span style={{ color: '#2E3244' }}>{sensorInfo.gauche_id}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
             Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span>
-          </p>
-          <p style={{ fontFamily: 'monospace', color: "#317AC1", marginBottom: '10px', fontSize: '1.1rem' }}>
+          </Typography>
+          <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
             Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span>
-          </p>
-        </>
+          </Typography>
+        </Paper>
       )}
-
       {filteredData.length > 0 && <Graph sensorData={filteredData} />}
-    </div>
+    </Box>
   );
 };
 

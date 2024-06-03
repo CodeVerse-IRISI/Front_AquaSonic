@@ -4,10 +4,9 @@ import back from '../assets/back.jpg';
 import Sidebar from './Sidebar';
 import Point from './Point';
 
-function Map() {
+function Map({ sidebarVisible, setSidebarVisible }) {
   const [selectedSensor, setSelectedSensor] = useState(null);
   const [points, setPoints] = useState([]);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,15 +60,15 @@ function Map() {
         src={back}
         alt="map"
         style={{
-          width: selectedSensor ? '50%' : '80%',
+          width: sidebarVisible ? '50%' : '80%',
           height: 'auto',
           position: 'absolute',
-          top: selectedSensor ? '10%' : '2%',
-          left: selectedSensor ? '2%' : '6%',
+          top: sidebarVisible ? '10%' : '2%',
+          left: sidebarVisible ? '2%' : '6%',
           objectFit: 'contain',
-          marginLeft: '75px',
+          marginLeft: '65px',
           objectPosition: 'center',
-          transition: 'background-size 0.0s ease',
+          transition: 'width 0.3s ease, top 0.3s ease, left 0.3s ease',
         }}
       />
       {points.map(point => (

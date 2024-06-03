@@ -6,7 +6,8 @@ import LeftSidebar from './Components/LeftSidebar';
 
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
-  const [showAddSensorModal, setShowAddSensorModal] = useState(false); // Add this line
+  const [showAddSensorModal, setShowAddSensorModal] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8087/ws/sensor-data');
@@ -48,14 +49,17 @@ function LeakStatus() {
     }));
   };
 
-  // Add this function to handle opening the AddSensor modal
   const handleAddSensorClick = () => {
     setShowAddSensorModal(true);
   };
 
-  // Add this function to handle closing the AddSensor modal
   const handleCloseAddSensorModal = () => {
     setShowAddSensorModal(false);
+  };
+
+  const handleNavigateToFirstPage = () => {
+    console.log("Navigate to first page");
+    setSidebarVisible(false);
   };
 
   return (
@@ -68,10 +72,16 @@ function LeakStatus() {
           small={sensor.small}
         />
       ))}
-      <Map onPointClick={handlePointClick} />
-  
-      <LeftSidebar onAddSensorClick={handleAddSensorClick} />
-
+      <Map 
+        onPointClick={handlePointClick}
+        sidebarVisible={sidebarVisible}
+        setSidebarVisible={setSidebarVisible}
+      />
+      <LeftSidebar
+        onAddSensorClick={handleAddSensorClick}
+        onHomeClick={handleNavigateToFirstPage}
+        setSidebarVisible={setSidebarVisible} 
+      />
       <AddSensor showModal={showAddSensorModal} onClose={handleCloseAddSensorModal} />
     </div>
   );
