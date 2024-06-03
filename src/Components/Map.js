@@ -61,14 +61,15 @@ function Map() {
         src={back}
         alt="map"
         style={{
-          width: selectedSensor ? '60%' : '90%',
+          width: selectedSensor ? '50%' : '80%',
           height: 'auto',
           position: 'absolute',
           top: selectedSensor ? '10%' : '2%',
           left: selectedSensor ? '2%' : '6%',
           objectFit: 'contain',
+          marginLeft: '75px',
           objectPosition: 'center',
-          transition: 'background-size 0.5s ease',
+          transition: 'background-size 0.0s ease',
         }}
       />
       {points.map(point => (

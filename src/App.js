@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Map from './Components/Map';
 import Notification from './Components/Notification';
 import AddSensor from './Components/AddSensor';
+import LeftSidebar from './Components/LeftSidebar';
 
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
+  const [showAddSensorModal, setShowAddSensorModal] = useState(false); // Add this line
 
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8087/ws/sensor-data');
@@ -46,6 +48,16 @@ function LeakStatus() {
     }));
   };
 
+  // Add this function to handle opening the AddSensor modal
+  const handleAddSensorClick = () => {
+    setShowAddSensorModal(true);
+  };
+
+  // Add this function to handle closing the AddSensor modal
+  const handleCloseAddSensorModal = () => {
+    setShowAddSensorModal(false);
+  };
+
   return (
     <div>
       {leakingSensors.map(sensor => (
@@ -57,7 +69,10 @@ function LeakStatus() {
         />
       ))}
       <Map onPointClick={handlePointClick} />
-      <AddSensor/>
+  
+      <LeftSidebar onAddSensorClick={handleAddSensorClick} />
+
+      <AddSensor showModal={showAddSensorModal} onClose={handleCloseAddSensorModal} />
     </div>
   );
 }
