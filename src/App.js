@@ -3,10 +3,11 @@ import Map from './Components/Map';
 import Notification from './Components/Notification';
 import AddSensor from './Components/AddSensor';
 import LeftSidebar from './Components/LeftSidebar';
-
+import Parametre from './Components/Parametre';
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
   const [showAddSensorModal, setShowAddSensorModal] = useState(false);
+  const [showParametreModal, setShowParametreModal] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
@@ -49,8 +50,12 @@ function LeakStatus() {
     }));
   };
 
+
   const handleAddSensorClick = () => {
     setShowAddSensorModal(true);
+  };
+  const handleParametreClick = () => {
+    setShowParametreModal(true);
   };
 
   const handleCloseAddSensorModal = () => {
@@ -81,8 +86,10 @@ function LeakStatus() {
         onAddSensorClick={handleAddSensorClick}
         onHomeClick={handleNavigateToFirstPage}
         setSidebarVisible={setSidebarVisible} 
+        onParametrSensorClick={handleParametreClick}
       />
       <AddSensor showModal={showAddSensorModal} onClose={handleCloseAddSensorModal} />
+      <Parametre showModal={showParametreModal} onClose={handleCloseAddSensorModal} />
     </div>
   );
 }

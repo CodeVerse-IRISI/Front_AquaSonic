@@ -21,7 +21,7 @@ function Map({ sidebarVisible, setSidebarVisible }) {
           id: capteur.sensor_id,
           x: capteur.X,
           y: capteur.Y,
-          status: leakStatus[capteur.sensor_id] < 50 ? 'normal' : 'leak',
+          status: leakStatus[capteur.sensor_id] > 50 ? 'leak' : 'normal',
         }));
 
         setPoints(updatedPoints);
