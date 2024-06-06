@@ -81,7 +81,6 @@ function LeakStatus() {
           small={sensor.small}
         />
       ))}
-      <Map onPointClick={handlePointClick} />
       <Map 
         onPointClick={handlePointClick}
         sidebarVisible={sidebarVisible}

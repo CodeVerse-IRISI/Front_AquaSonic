@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Modal, Box, Typography, TextField, Grid, IconButton,Alert} from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, Grid, IconButton, Alert, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
 
 const Parametrage = ({ showModal, onClose }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +9,7 @@ const Parametrage = ({ showModal, onClose }) => {
     diameter: '',
     material: '',
     branched: '',
+    looped: '',
   });
 
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ const Parametrage = ({ showModal, onClose }) => {
   };
 
   const validateForm = () => {
-    if (!formData.depth || !formData.diameter || !formData.material || !formData.branched) {
+    if (!formData.depth || !formData.diameter || !formData.material || (!formData.branched && !formData.looped)) {
       return "Tous les champs doivent être remplis.";
     }
     if (isNaN(formData.depth) || isNaN(formData.diameter)) {
@@ -38,7 +38,14 @@ const Parametrage = ({ showModal, onClose }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8087/api/SaveEnvSetup', formData);
+      const response = await axios.post('http://localhost:8087/api/env/SaveEnvSetup', {
+        depth: parseInt(formData.depth),
+        diameter: parseInt(formData.diameter),
+        material: formData.material,
+        branched: formData.branched === 'branched',
+        looped: formData.looped === 'looped',
+      });
+      console.log('Données envoyées avec succès:', response.data);
       setSuccessMessage('Données envoyées avec succès');
       setError('');
       setFormData({
@@ -46,13 +53,13 @@ const Parametrage = ({ showModal, onClose }) => {
         diameter: '',
         material: '',
         branched: '',
+        looped: '',
       });
       onClose();
     } catch (error) {
       setError('Erreur lors de l\'envoi des données: ' + error.message);
     }
   };
-
   return (
     <Modal open={showModal} onClose={onClose}>
       <Box
@@ -121,14 +128,15 @@ const Parametrage = ({ showModal, onClose }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="Branchement"
+              <RadioGroup
+                row
                 name="branched"
                 value={formData.branched}
                 onChange={handleChange}
-                fullWidth
-                variant="outlined"
-              />
+              >
+                <FormControlLabel value="branched" control={<Radio />} label="Branché" />
+                <FormControlLabel value="looped" control={<Radio />} label="Bouclé" />
+              </RadioGroup>
             </Grid>
           </Grid>
           <Button
