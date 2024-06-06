@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Map from './Components/Map';
 import Notification from './Components/Notification';
-import Rapport from './Components/Rapport';
 import AddSensor from './Components/AddSensor';
 import LeftSidebar from './Components/LeftSidebar';
-
+import Parametre from './Components/Parametre';
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
   const [showAddSensorModal, setShowAddSensorModal] = useState(false);
+  const [showParametreModal, setShowParametreModal] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
@@ -50,12 +50,20 @@ function LeakStatus() {
     }));
   };
 
+
   const handleAddSensorClick = () => {
     setShowAddSensorModal(true);
+  };
+  const handleParametreClick = () => {
+    setShowParametreModal(true);
   };
 
   const handleCloseAddSensorModal = () => {
     setShowAddSensorModal(false);
+  };
+
+  const handleCloseParametreModal = () => {
+    setShowParametreModal(false);
   };
 
   const handleNavigateToFirstPage = () => {
@@ -83,9 +91,10 @@ function LeakStatus() {
         onAddSensorClick={handleAddSensorClick}
         onHomeClick={handleNavigateToFirstPage}
         setSidebarVisible={setSidebarVisible} 
+        onParametrSensorClick={handleParametreClick}
       />
       <AddSensor showModal={showAddSensorModal} onClose={handleCloseAddSensorModal} />
-      <Rapport/>
+      <Parametre showModal={showParametreModal} onClose={handleCloseParametreModal} />
     </div>
   );
 }
