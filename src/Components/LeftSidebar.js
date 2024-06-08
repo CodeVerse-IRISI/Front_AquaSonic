@@ -55,7 +55,7 @@ const LeftSidebar = ({ onAddSensorClick, onParametrSensorClick, onHomeClick, set
           sx={{ marginBottom: '60px' }}
           onClick={onAddSensorClick}
         >
-          <AddCircleOutlineIcon />
+        <AddCircleOutlineIcon />
         </IconButton>
       </Tooltip>
       <Tooltip title="Paramètres" placement="right" arrow>

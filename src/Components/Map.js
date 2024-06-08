@@ -1,42 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import useAxios from '../hooks/useAxios';
 import axios from 'axios';
 import back from '../assets/back.jpg';
 import Sidebar from './Sidebar';
 import Point from './Point';
+import Loading from './Loading';
 
 function Map({ sidebarVisible, setSidebarVisible }) {
+  const { data: capteurs, error: capteursError, loading: capteursLoading } = useAxios('http://localhost:8087/api/capteurs');
+  const { data: leakStatus, error: leakStatusError, loading: leakStatusLoading } = useAxios('http://localhost:8087/api/AquaSonic/Couleur/leakStatus');
+
   const [selectedSensor, setSelectedSensor] = useState(null);
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sensorResponse = await axios.get('http://localhost:8087/api/capteurs');
-        const capteurs = sensorResponse.data;
-        const leakStatusResponse = await axios.get('http://localhost:8087/api/AquaSonic/Couleur/leakStatus');
-        const leakStatus = leakStatusResponse.data;
+    if (capteurs && leakStatus) {
+      const updatedPoints = capteurs.map(capteur => ({
+        id: capteur.sensor_id,
+        x: capteur.X,
+        y: capteur.Y,
+        status: leakStatus[capteur.sensor_id] > 50 ? 'leak' : 'normal',
+      }));
 
-        const updatedPoints = capteurs.map(capteur => ({
-          id: capteur.sensor_id,
-          x: capteur.X,
-          y: capteur.Y,
-          status: leakStatus[capteur.sensor_id] > 50 ? 'leak' : 'normal',
-        }));
-
-        setPoints(updatedPoints);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+      setPoints(updatedPoints);
+    }
+  }, [capteurs, leakStatus]);
 
   const handleClick = async (id) => {
     try {
-      const sensorInfoResponse = await axios.get(`http://localhost:8087/api/information/${id}`);
-      const sensorInfo = sensorInfoResponse.data;
-
+      const { data: sensorInfo } = await axios.get(`http://localhost:8087/api/information/${id}`);
       const clickedSensor = points.find(point => point.id === id);
       const selectedSensor = {
         ...clickedSensor,
@@ -52,6 +44,33 @@ function Map({ sidebarVisible, setSidebarVisible }) {
       console.error('Error fetching sensor information:', error);
     }
   };
+
+  if (capteursLoading || leakStatusLoading) {
+    return (
+      <div style={{ position: 'relative', height: '100vh' }}>
+        <img
+          src={back}
+          alt="map"
+          style={{
+            width: sidebarVisible ? '50%' : '80%',
+            height: 'auto',
+            position: 'absolute',
+            top: sidebarVisible ? '10%' : '2%',
+            left: sidebarVisible ? '2%' : '6%',
+            objectFit: 'contain',
+            marginLeft: '65px',
+            objectPosition: 'center',
+            transition: 'width 0.3s ease, top 0.3s ease, left 0.3s ease',
+          }}
+        />
+        <Loading />
+      </div>
+    );
+  }
+
+  if (capteursError || leakStatusError) {
+    return <div>Error loading data</div>;
+  }
 
   return (
     <div style={{ justifyContent: 'center', alignItems: 'flex-end', height: '100vh', overflow: 'hidden', position: 'relative' }}>
