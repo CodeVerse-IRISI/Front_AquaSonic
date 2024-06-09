@@ -6,6 +6,12 @@ import Sidebar from './Sidebar';
 import Point from './Point';
 import Loading from './Loading';
 
+/**
+ * Composant Map qui affiche la carte et l'état des capteurs.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {boolean} props.sidebarVisible - État pour gérer la visibilité de la barre latérale.
+ * @param {function} props.setSidebarVisible - Fonction pour définir la visibilité de la barre latérale.
+ */
 function Map({ sidebarVisible, setSidebarVisible }) {
   const { data: capteurs, error: capteursError, loading: capteursLoading } = useAxios('http://localhost:8087/api/capteurs');
   const { data: leakStatus, error: leakStatusError, loading: leakStatusLoading } = useAxios('http://localhost:8087/api/AquaSonic/Couleur/leakStatus');
@@ -41,7 +47,7 @@ function Map({ sidebarVisible, setSidebarVisible }) {
       setSelectedSensor(selectedSensor);
       setSidebarVisible(true);
     } catch (error) {
-      console.error('Error fetching sensor information:', error);
+      console.error('Erreur lors de la récupération des informations du capteur:', error);
     }
   };
 
@@ -69,7 +75,7 @@ function Map({ sidebarVisible, setSidebarVisible }) {
   }
 
   if (capteursError || leakStatusError) {
-    return <div>Error loading data</div>;
+    return <div>Erreur lors du chargement des données</div>;
   }
 
   return (

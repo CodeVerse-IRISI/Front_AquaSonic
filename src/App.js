@@ -4,6 +4,10 @@ import Notification from './Components/Notification';
 import AddSensor from './Components/AddSensor';
 import LeftSidebar from './Components/LeftSidebar';
 import Parametre from './Components/Parametre';
+
+/**
+ * Composant principal qui gère l'état et la logique pour la détection et l'affichage des capteurs en fuite.
+ */
 function LeakStatus() {
   const [leakingSensors, setLeakingSensors] = useState([]);
   const [showAddSensorModal, setShowAddSensorModal] = useState(false);
@@ -14,7 +18,7 @@ function LeakStatus() {
     const socket = new WebSocket('ws://localhost:8087/ws/sensor-data');
 
     socket.onopen = () => {
-      console.log('WebSocket connection established');
+      console.log('Connexion WebSocket établie');
     };
 
     socket.onmessage = (event) => {
@@ -24,11 +28,11 @@ function LeakStatus() {
     };
 
     socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      console.error('Erreur WebSocket:', error);
     };
 
     socket.onclose = (event) => {
-      console.log('WebSocket connection closed:', event);
+      console.log('Connexion WebSocket fermée:', event);
     };
 
     return () => {
@@ -50,10 +54,10 @@ function LeakStatus() {
     }));
   };
 
-
   const handleAddSensorClick = () => {
     setShowAddSensorModal(true);
   };
+
   const handleParametreClick = () => {
     setShowParametreModal(true);
   };
@@ -67,7 +71,7 @@ function LeakStatus() {
   };
 
   const handleNavigateToFirstPage = () => {
-    console.log("Navigate to first page");
+    console.log("Naviguer vers la première page");
     setSidebarVisible(false);
   };
 
