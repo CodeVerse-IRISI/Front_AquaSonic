@@ -5,6 +5,14 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SettingsIcon from '@mui/icons-material/Settings';
 import logo from '../assets/logo.png';
 
+/**
+ * Composant LeftSidebar pour la barre latérale de gauche.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {function} props.onAddSensorClick - Fonction pour gérer l'ajout de capteur.
+ * @param {function} props.onParametrSensorClick - Fonction pour gérer les paramètres des capteurs.
+ * @param {function} props.onHomeClick - Fonction pour gérer l'accès à l'accueil.
+ * @param {function} props.setSidebarVisible - Fonction pour définir la visibilité de la barre latérale.
+ */
 const LeftSidebar = ({ onAddSensorClick, onParametrSensorClick, onHomeClick, setSidebarVisible }) => {
   const handleLogoClick = () => {
     setSidebarVisible(false);

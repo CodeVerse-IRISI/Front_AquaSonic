@@ -3,6 +3,12 @@ import axios from 'axios';
 import { Button, Modal, Box, Typography, TextField, Grid, IconButton, Alert, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
+/**
+ * Composant Parametrage pour la configuration de l'environnement.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {boolean} props.showModal - Indique si le modal est visible.
+ * @param {function} props.onClose - Fonction pour fermer le modal.
+ */
 const Parametrage = ({ showModal, onClose }) => {
   const [formData, setFormData] = useState({
     depth: '',
@@ -60,6 +66,7 @@ const Parametrage = ({ showModal, onClose }) => {
       setError('Erreur lors de l\'envoi des données: ' + error.message);
     }
   };
+
   return (
     <Modal open={showModal} onClose={onClose}>
       <Box

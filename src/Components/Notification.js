@@ -1,6 +1,13 @@
 import React from 'react';
 import { FaTimes, FaExclamationTriangle } from 'react-icons/fa';
 
+/**
+ * Composant Notification pour afficher une notification.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {string} props.message - Le message de la notification.
+ * @param {function} props.onClose - Fonction pour fermer la notification.
+ * @param {boolean} props.small - Indique si la notification est petite.
+ */
 function Notification({ message, onClose, small }) {
   const styles = {
     container: {

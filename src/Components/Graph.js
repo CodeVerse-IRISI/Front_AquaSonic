@@ -1,6 +1,11 @@
 import React from 'react';
-import ChartComponent from './Chart';
+import ChartComponent from './ChartComponent';
 
+/**
+ * Composant Graph qui affiche les données des capteurs sous forme de graphiques.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {Array} props.sensorData - Les données à afficher dans les graphiques.
+ */
 const Graph = ({ sensorData }) => {
   return (
     <div>

@@ -1,7 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
-const ChartComponent = ({ data ,width, height }) => {
+/**
+ * Composant ChartComponent pour afficher les données des capteurs sous forme de graphique.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {Object} props.data - Les données à afficher.
+ * @param {number} props.width - La largeur du graphique.
+ * @param {number} props.height - La hauteur du graphique.
+ */
+const ChartComponent = ({ data, width, height }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -45,13 +52,12 @@ const ChartComponent = ({ data ,width, height }) => {
       });
     }
 
-    // Retourne une fonction de nettoyage pour détruire l'instance de Chart lors du démontage du composant
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [data, width,height]);
+  }, [data, width, height]);
 
   return (
     <div style={{ width, height }}>

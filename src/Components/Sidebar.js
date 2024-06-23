@@ -3,6 +3,11 @@ import axios from 'axios';
 import Graph from './Graph';
 import { Box, Typography, TextField, Paper } from '@mui/material';
 
+/**
+ * Composant Sidebar qui affiche les détails du capteur et le graphique.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {Object} props.sensor - Les détails du capteur sélectionné.
+ */
 const Sidebar = ({ sensor }) => {
   const [searchDate, setSearchDate] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -18,7 +23,7 @@ const Sidebar = ({ sensor }) => {
       const response = await axios.get(`http://localhost:8087/api/AquaSonic/SensorDataByDate/${sensorId}/${dateStr}`);
       setFilteredData(response.data);
     } catch (error) {
-      console.error('Error fetching sensor data by date:', error);
+      console.error('Erreur lors de la récupération des données du capteur par date:', error);
     }
   };
 
@@ -28,7 +33,7 @@ const Sidebar = ({ sensor }) => {
       const response = await axios.get(`http://localhost:8087/api/AquaSonic/SensorDataByDate/${sensorId}/${today}`);
       setFilteredData(response.data);
     } catch (error) {
-      console.error('Error fetching today\'s sensor data:', error);
+      console.error('Erreur lors de la récupération des données du capteur pour aujourd\'hui:', error);
     }
   };
 
@@ -62,7 +67,7 @@ const Sidebar = ({ sensor }) => {
     >
       <Box sx={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px', display: 'flex', color: '#D5CABC', alignItems: 'center' }}>
         <Typography variant="h6" sx={{ marginRight: '20px', color: '#333' }}>
-          Sensor Info:
+          Informations du Capteur:
         </Typography>
         <TextField
           type="date"
@@ -76,22 +81,22 @@ const Sidebar = ({ sensor }) => {
       {sensorInfo && (
         <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px', color: '#D5CABC'}}>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Name: <span style={{ color: '#2E3244' }}>{sensorInfo.id}</span>
+            Nom: <span style={{ color: '#2E3244' }}>{sensorInfo.id}</span>
           </Typography>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Status: <span style={{ color: sensorInfo.status === 'normal' ? 'green' : 'red' }}>{sensorInfo.status}</span>
+            Statut: <span style={{ color: sensorInfo.status === 'normal' ? 'green' : 'red' }}>{sensorInfo.status}</span>
           </Typography>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Right sensor: <span style={{ color: '#2E3244' }}>{sensorInfo.droite_id}</span>
+            Capteur à droite: <span style={{ color: '#2E3244' }}>{sensorInfo.droite_id}</span>
           </Typography>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Left sensor: <span style={{ color: '#2E3244' }}>{sensorInfo.gauche_id}</span>
+            Capteur à gauche: <span style={{ color: '#2E3244' }}>{sensorInfo.gauche_id}</span>
           </Typography>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Number of leaks: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span>
+            Nombre de fuites: <span style={{ color: 'red' }}>{sensorInfo.nb_fuite}</span>
           </Typography>
           <Typography variant="body1" sx={{ fontFamily: 'monospace', color: '#317AC1', marginBottom: '10px' }}>
-            Number of repairs: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span>
+            Nombre de réparations: <span style={{ color: 'green' }}>{sensorInfo.nb_reparation}</span>
           </Typography>
         </Paper>
       )}

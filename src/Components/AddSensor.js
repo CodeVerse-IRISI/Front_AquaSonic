@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {Button,Modal,Box,Typography,TextField,Grid,IconButton,} from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, Grid, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
+/**
+ * Composant AddSensor pour ajouter un nouveau capteur.
+ * @param {Object} props - Les propriétés du composant.
+ * @param {boolean} props.showModal - Indique si le modal est visible.
+ * @param {function} props.onClose - Fonction pour fermer le modal.
+ */
 const AddSensor = ({ showModal, onClose }) => {
   const [formData, setFormData] = useState({
     sensor_id: '',
