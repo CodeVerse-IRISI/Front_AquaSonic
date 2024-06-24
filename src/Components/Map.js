@@ -24,7 +24,7 @@ function Map({ sidebarVisible, setSidebarVisible }) {
     if (capteurs && leakStatus) {
       const updatedPoints = capteurs.map(capteur => ({
         id: capteur.sensor_id,
-        x: capteur.X,
+        x: capteur.x,
         y: capteur.Y,
         status: leakStatus[capteur.sensor_id] > 50 ? 'leak' : 'normal',
       }));
