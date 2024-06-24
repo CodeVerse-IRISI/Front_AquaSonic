@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Modal, Box, Typography, TextField, Grid, IconButton } from '@mui/material';
+import { Button, Modal, Box, Typography, TextField, Grid, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 /**
@@ -21,14 +21,49 @@ const AddSensor = ({ showModal, onClose }) => {
     nb_reparation: 0,
   });
 
+  const [xValue, setXValue] = useState(0); // Variable d'état pour stocker la valeur de x
+  const [sensors, setSensors] = useState([]); // Variable d'état pour stocker les capteurs existants
+  const [matchingSensorsDroite, setMatchingSensorsDroite] = useState([]); // Variable d'état pour stocker les capteurs correspondant à droite
+  const [matchingSensorsGauche, setMatchingSensorsGauche] = useState([]); // Variable d'état pour stocker les capteurs correspondant à gauche
+
+  useEffect(() => {
+    // Appel à l'API pour obtenir les capteurs existants
+    const fetchSensors = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8087/api/capteurs');
+        setSensors(response.data); // Supposons que l'API renvoie un tableau d'objets capteurs
+      } catch (error) {
+        console.error('Erreur lors de la récupération des capteurs:', error);
+      }
+    };
+
+    fetchSensors();
+  }, []);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (name === 'x') {
+      const xVal = parseFloat(value);
+      setXValue(xVal); // Mettre à jour la valeur de x dans l'état local
+
+
+      // Filtrer les capteurs dont la coordonnée x est supérieure à la valeur x saisie
+      const matchingDroite = sensors.filter(sensor => sensor.x > xVal);
+      setMatchingSensorsDroite(matchingDroite);
+
+      // Filtrer les capteurs dont la coordonnée x est inférieure à la valeur x saisie
+      const matchingGauche = sensors.filter(sensor => sensor.x < xVal);
+      setMatchingSensorsGauche(matchingGauche);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:8087/api/SaveInfoSensor', formData);
+      const response = await axios.post('http://127.0.0.1:8087/api/SaveInfoSensor', formData);
       console.log('Données envoyées avec succès:', response.data);
       onClose();
     } catch (error) {
@@ -102,25 +137,40 @@ const AddSensor = ({ showModal, onClose }) => {
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                label="Capteur Droite"
-                name="droite_id"
-                value={formData.droite_id}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Capteur Droite</InputLabel>
+                <Select
+                  name="droite_id"
+                  value={formData.droite_id}
+                  onChange={handleChange}
+                  label="Capteur Droite"
+                >
+                  {matchingSensorsDroite.map(sensor => (
+                    <MenuItem key={sensor.sensor_id} value={sensor.sensor_id}>
+                      {sensor.sensor_id}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                label="Capteur Gauche"
-                name="gauche_id"
-                value={formData.gauche_id}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Capteur Gauche</InputLabel>
+                <Select
+                  name="gauche_id"
+                  value={formData.gauche_id}
+                  onChange={handleChange}
+                  label="Capteur Gauche"
+                >
+                  {matchingSensorsGauche.map(sensor => (
+                    <MenuItem key={sensor.sensor_id} value={sensor.sensor_id}>
+                      {sensor.sensor_id}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
+
           </Grid>
           <Button
             type="submit"
